@@ -19,6 +19,11 @@ namespace SponsorshipWorkflow.Api.Controllers
             _context = context;
             _jwtService = jwtService;
         }
+        [HttpGet]
+        public IActionResult Get()
+        {
+            return Ok("API is working successfully");
+        }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
