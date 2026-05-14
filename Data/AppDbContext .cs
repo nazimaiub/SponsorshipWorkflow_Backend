@@ -6,15 +6,8 @@ namespace SponsorshipWorkflow.Api.Data
 {
     public class AppDbContext : DbContext
     {
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
-        {
-        }
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        public DbSet<User> Users => Set<User>();
-
-        //public DbSet<SponsorshipRequest> SponsorshipRequests => Set<SponsorshipRequest>();
-
-        //public DbSet<ApprovalHistory> ApprovalHistories => Set<ApprovalHistory>();
+        public DbSet<User> Users { get; set; }
     }
 }

@@ -19,10 +19,10 @@ namespace SponsorshipWorkflow.Api.Controllers
             _context = context;
             _jwtService = jwtService;
         }
-        [HttpGet]
-        public IActionResult Get()
+        [HttpGet("users")]
+        public IActionResult GetUsers()
         {
-            return Ok("API is working successfully");
+            return Ok(_context.Users.ToList());
         }
 
         [HttpPost("login")]

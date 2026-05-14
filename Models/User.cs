@@ -1,8 +1,11 @@
-﻿namespace SponsorshipWorkflow.Api.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SponsorshipWorkflow.Api.Models
 {
     public class User
     {
-        public Guid Id { get; set; }
+        [Key]
+        public int Id { get; set; }
 
         public string Name { get; set; } = string.Empty;
 
