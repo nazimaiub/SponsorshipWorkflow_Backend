@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using SponsorshipWorkflow.Api.Data;
 using SponsorshipWorkflow.Api.Models;
-using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -57,6 +56,10 @@ builder.Services.AddCors(options =>
         });
 });
 var app = builder.Build();
+
+// Render Port Binding
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
