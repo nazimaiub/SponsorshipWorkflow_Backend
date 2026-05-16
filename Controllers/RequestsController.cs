@@ -25,12 +25,17 @@ namespace SponsorshipWorkflow.Api.Controllers
         [HttpPost("draft")]
         public async Task<IActionResult> SaveDraft([FromBody] SponsorshipRequestDto dto)
         {
-            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-            dto.RequestorId = userEmail;
-            
-            await _service.SaveDraftAsync(dto);
-
-            return Ok(new { message = "Draft saved successfully" });
+            try
+            {
+                var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+                dto.RequestorId = userEmail;
+                await _service.SaveDraftAsync(dto);
+                return Ok(new { message = "Draft saved successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         [Authorize]
