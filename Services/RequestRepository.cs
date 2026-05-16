@@ -13,12 +13,12 @@ namespace SponsorshipWorkflow.Api.Services
             _context = context;
         }
 
-        public async Task<List<SponsorshipRequest>> GetAllAsync()
+        public async Task<List<SponsorshipRequest>> GetAllMyRequests(string userEmail)
         {
-            return await _context.SponsorshipRequests.ToListAsync();
+            return await _context.SponsorshipRequests.Where(x=>x.RequestorId == userEmail).ToListAsync();
         }
 
-        public async Task<SponsorshipRequest?> GetByIdAsync(Guid id)
+        public async Task<SponsorshipRequest?> GetSponsorshipRequestsByIdAsync(Guid id)
         {
             return await _context.SponsorshipRequests
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -28,22 +28,25 @@ namespace SponsorshipWorkflow.Api.Services
         {
             try
             {
-                var existing = await _context.SponsorshipRequests
-                .FirstOrDefaultAsync(x => x.RequestorId == entity.RequestorId);
-
-                if (existing != null)
+                if (entity.Id != Guid.Empty)
                 {
-                    existing.RequestTitle = entity.RequestTitle;
-                    existing.Department = entity.Department;
-                    existing.SponsorshipType = entity.SponsorshipType;
-                    existing.EventName = entity.EventName;
-                    entity.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
-                    existing.RequestedAmount = entity.RequestedAmount;
-                    existing.Purpose = entity.Purpose;
-                    existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
-                    entity.UpdatedAt = DateTime.UtcNow;
-                    await _context.SaveChangesAsync();
-                    return existing.Id;
+                    var existing = await _context.SponsorshipRequests
+                    .FirstOrDefaultAsync(x => x.RequestorId == entity.RequestorId && x.Id == entity.Id);
+
+                    if (existing != null)
+                    {
+                        existing.RequestTitle = entity.RequestTitle;
+                        existing.Department = entity.Department;
+                        existing.SponsorshipType = entity.SponsorshipType;
+                        existing.EventName = entity.EventName;
+                        entity.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
+                        existing.RequestedAmount = entity.RequestedAmount;
+                        existing.Purpose = entity.Purpose;
+                        existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
+                        entity.UpdatedAt = DateTime.UtcNow;
+                        await _context.SaveChangesAsync();
+                        return existing.Id;
+                    }
                 }
 
                 entity.Id = Guid.NewGuid();
@@ -66,24 +69,25 @@ namespace SponsorshipWorkflow.Api.Services
         {
             try
             {
-                var existing = await _context.SponsorshipRequests
+                if (entity.Id != Guid.Empty)
+                {
+                    var existing = await _context.SponsorshipRequests
                     .FirstOrDefaultAsync(x => x.Id == entity.Id);
 
-                if (existing != null)
-                {
-                    existing.RequestTitle = entity.RequestTitle;
-                    existing.Department = entity.Department;
-                    existing.SponsorshipType = entity.SponsorshipType;
-                    existing.EventName = entity.EventName;
-                    entity.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
-                    existing.RequestedAmount = entity.RequestedAmount;
-                    existing.Purpose = entity.Purpose;
-                    existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
-                    entity.UpdatedAt = DateTime.UtcNow;
-                    await _context.SaveChangesAsync();
-                    return existing.Id;
+                    if (existing != null)
+                    {
+                        existing.RequestTitle = entity.RequestTitle;
+                        existing.Department = entity.Department;
+                        existing.SponsorshipType = entity.SponsorshipType;
+                        existing.EventName = entity.EventName;
+                        existing.RequestedAmount = entity.RequestedAmount;
+                        existing.Purpose = entity.Purpose;
+                        existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
+                        entity.UpdatedAt = DateTime.UtcNow;
+                        await _context.SaveChangesAsync();
+                        return existing.Id;
+                    }
                 }
-
                 entity.Id = Guid.NewGuid();
                 entity.Status = "Pending Manager Approval";
                 entity.CreatedAt = DateTime.UtcNow;

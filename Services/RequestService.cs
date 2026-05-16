@@ -26,14 +26,14 @@ namespace SponsorshipWorkflow.Api.Services
             await _repo.SubmitAsync(entity);
         }
 
-        public async Task<List<SponsorshipRequest>> GetAllAsync()
+        public async Task<List<SponsorshipRequest>> GetAllMyRequests(string userEmail)
         {
-            return await _repo.GetAllAsync();
+            return await _repo.GetAllMyRequests(userEmail);
         }
 
-        public async Task<SponsorshipRequest?> GetByIdAsync(Guid id)
+        public async Task<SponsorshipRequest?> GetSponsorshipRequestsByIdAsync(Guid id)
         {
-            return await _repo.GetByIdAsync(id);
+            return await _repo.GetSponsorshipRequestsByIdAsync(id);
         }
         private SponsorshipRequest Map(SponsorshipRequestDto dto, string status)
         {

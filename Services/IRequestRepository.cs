@@ -4,12 +4,13 @@ namespace SponsorshipWorkflow.Api.Services
 {
     public interface IRequestRepository
     {
-        Task<SponsorshipRequest?> GetByIdAsync(Guid id);
+        Task<SponsorshipRequest?> GetSponsorshipRequestsByIdAsync(Guid id);
 
         Task<Guid> SaveDraftAsync(SponsorshipRequest entity);
 
         Task<Guid> SubmitAsync(SponsorshipRequest entity);
 
-        Task<List<SponsorshipRequest>> GetAllAsync();
+        Task<List<SponsorshipRequest>> GetAllMyRequests(string userEmail);
     }
 }
+;

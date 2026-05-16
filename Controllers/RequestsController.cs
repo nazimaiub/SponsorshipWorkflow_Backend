@@ -53,9 +53,19 @@ namespace SponsorshipWorkflow.Api.Controllers
 
         // GET ALL
         [HttpGet("my-requests")]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAllMyRequests()
         {
-            var data = await _service.GetAllAsync();
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var data = await _service.GetAllMyRequests(userEmail);
+
+            return Ok(data);
+        }
+
+        [HttpGet("request-by-id")]
+        public async Task<IActionResult> GetSponsorshipRequestsByIdAsync(Guid id)
+        {
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var data = await _service.GetSponsorshipRequestsByIdAsync(id);
 
             return Ok(data);
         }
