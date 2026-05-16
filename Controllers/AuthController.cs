@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SponsorshipWorkflow.Api.Data;
 using SponsorshipWorkflow.Api.Models;
+using SponsorshipWorkflow.Api.Services;
 using System;
 
 namespace SponsorshipWorkflow.Api.Controllers
@@ -11,52 +12,29 @@ namespace SponsorshipWorkflow.Api.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly AppDbContext _context;
-        private readonly JwtService _jwtService;
-
-        public AuthController(AppDbContext context, JwtService jwtService)
+        private readonly IAuthService _authService;
+        public AuthController(IAuthService authService)
         {
-            _context = context;
-            _jwtService = jwtService;
-        }
-        [HttpGet("users")]
-        public IActionResult GetUsers()
-        {
-            return Ok(_context.Users.ToList());
+            _authService = authService;
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginRequest request)
         {
-            var user = await _context.Users
-                .FirstOrDefaultAsync(x => x.Email == request.Email);
+            var result = await _authService.LoginAsync(request);
 
-            if (user == null)
+            if (result == null)
                 return Unauthorized();
 
-            var validPassword = BCrypt.Net.BCrypt.Verify(
-                request.Password,
-                user.PasswordHash
-            );
-
-            if (!validPassword)
-                return Unauthorized();
-
-            var token = _jwtService.GenerateToken(user);
-
-            return Ok(new
-            {
-                token,
-                role = user.Role,
-                name = user.Name
-            });
+            return Ok(result);
         }
+        
+        [HttpGet("users")]
+        public IActionResult GetUsers()
+        {
+            return null;
+        }
+
     }
 
-    public class LoginRequest
-    {
-        public string Email { get; set; } = string.Empty;
-
-        public string Password { get; set; } = string.Empty;
-    }
 }

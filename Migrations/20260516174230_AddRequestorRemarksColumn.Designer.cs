@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SponsorshipWorkflow.Api.Data;
@@ -11,9 +12,11 @@ using SponsorshipWorkflow.Api.Data;
 namespace SponsorshipWorkflow.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260516174230_AddRequestorRemarksColumn")]
+    partial class AddRequestorRemarksColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -95,9 +98,8 @@ namespace SponsorshipWorkflow.Api.Migrations
                     b.Property<decimal>("RequestedAmount")
                         .HasColumnType("numeric");
 
-                    b.Property<string>("RequestorId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("RequestorId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("RequestorRemarks")
                         .IsRequired()
