@@ -52,7 +52,7 @@ namespace SponsorshipWorkflow.Api.Services
                 entity.Id = Guid.NewGuid();
                 entity.Status = "Draft";
                 entity.CreatedAt = DateTime.UtcNow;
-
+                entity.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
                 await _context.SponsorshipRequests.AddAsync(entity);
                 await _context.SaveChangesAsync();
 
@@ -91,7 +91,7 @@ namespace SponsorshipWorkflow.Api.Services
                 entity.Id = Guid.NewGuid();
                 entity.Status = "Pending Manager Approval";
                 entity.CreatedAt = DateTime.UtcNow;
-
+                entity.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
                 await _context.SponsorshipRequests.AddAsync(entity);
                 await _context.SaveChangesAsync();
 
