@@ -38,11 +38,17 @@ namespace SponsorshipWorkflow.Api.Controllers
         [HttpPost("submit")]
         public async Task<IActionResult> Submit([FromBody] SponsorshipRequestDto dto)
         {
-            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-            dto.RequestorId = userEmail;
-            await _service.SubmitAsync(dto);
-
-            return Ok(new { message = "Request submitted successfully" });
+            try
+            {
+                var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+                dto.RequestorId = userEmail;
+                await _service.SubmitAsync(dto);
+                return Ok(new { message = "Request submitted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
         }
 
         // GET ALL
