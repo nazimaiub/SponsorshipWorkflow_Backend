@@ -26,25 +26,22 @@ namespace SponsorshipWorkflow.Api.Services
 
         public async Task<Guid> SaveDraftAsync(SponsorshipRequest entity)
         {
-            if (entity.Id != Guid.Empty)
-            {
-                var existing = await _context.SponsorshipRequests
-                    .FirstOrDefaultAsync(x => x.RequestorId == entity.RequestorId);
+            var existing = await _context.SponsorshipRequests
+                .FirstOrDefaultAsync(x => x.RequestorId == entity.RequestorId);
 
-                if (existing != null)
-                {
-                    existing.RequestTitle = entity.RequestTitle;
-                    existing.Department = entity.Department;
-                    existing.SponsorshipType = entity.SponsorshipType;
-                    existing.EventName = entity.EventName;
-                    existing.EventDate = entity.EventDate;
-                    existing.RequestedAmount = entity.RequestedAmount;
-                    existing.Purpose = entity.Purpose;
-                    existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
-                    entity.UpdatedAt = DateTime.UtcNow;
-                    await _context.SaveChangesAsync();
-                    return existing.Id;
-                }
+            if (existing != null)
+            {
+                existing.RequestTitle = entity.RequestTitle;
+                existing.Department = entity.Department;
+                existing.SponsorshipType = entity.SponsorshipType;
+                existing.EventName = entity.EventName;
+                existing.EventDate = entity.EventDate;
+                existing.RequestedAmount = entity.RequestedAmount;
+                existing.Purpose = entity.Purpose;
+                existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
+                entity.UpdatedAt = DateTime.UtcNow;
+                await _context.SaveChangesAsync();
+                return existing.Id;
             }
 
             entity.Id = Guid.NewGuid();
