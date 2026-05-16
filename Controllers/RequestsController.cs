@@ -1,9 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SponsorshipWorkflow.Api.Data;
-using SponsorshipWorkflow.Api.Models;
 using SponsorshipWorkflow.Api.Models.Dto;
 using SponsorshipWorkflow.Api.Services;
 using System.Security.Claims;

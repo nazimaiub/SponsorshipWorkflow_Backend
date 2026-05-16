@@ -40,8 +40,8 @@ namespace SponsorshipWorkflow.Api.Services
                     existing.EventDate = entity.EventDate;
                     existing.RequestedAmount = entity.RequestedAmount;
                     existing.Purpose = entity.Purpose;
-                    existing.ManagerRemarks = entity.ManagerRemarks;
-
+                    existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
+                    entity.UpdatedAt = DateTime.UtcNow;
                     await _context.SaveChangesAsync();
                     return existing.Id;
                 }
