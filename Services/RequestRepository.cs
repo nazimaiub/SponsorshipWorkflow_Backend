@@ -39,11 +39,11 @@ namespace SponsorshipWorkflow.Api.Services
                         existing.Department = entity.Department;
                         existing.SponsorshipType = entity.SponsorshipType;
                         existing.EventName = entity.EventName;
-                        entity.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
+                        existing.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
                         existing.RequestedAmount = entity.RequestedAmount;
                         existing.Purpose = entity.Purpose;
                         existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
-                        entity.UpdatedAt = DateTime.UtcNow;
+                        existing.UpdatedAt = DateTime.UtcNow;
                         await _context.SaveChangesAsync();
                         return existing.Id;
                     }
@@ -80,11 +80,12 @@ namespace SponsorshipWorkflow.Api.Services
                         existing.Department = entity.Department;
                         existing.SponsorshipType = entity.SponsorshipType;
                         existing.EventName = entity.EventName;
+                        existing.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
                         existing.RequestedAmount = entity.RequestedAmount;
                         existing.Purpose = entity.Purpose;
                         existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
-                        entity.UpdatedAt = DateTime.UtcNow;
-                        entity.Status = "Pending Manager Approval";
+                        existing.UpdatedAt = DateTime.UtcNow;
+                        existing.Status = "Pending Manager Approval";
                         await _context.SaveChangesAsync();
                         return existing.Id;
                     }
