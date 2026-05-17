@@ -69,7 +69,7 @@ namespace SponsorshipWorkflow.Api.Controllers
             return Ok(data);
         }
 
-        [HttpGet("request-by-id")]
+        [HttpGet("request-by-id/{id}")]
         public async Task<IActionResult> GetSponsorshipRequestsByIdAsync(Guid id)
         {
             var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
