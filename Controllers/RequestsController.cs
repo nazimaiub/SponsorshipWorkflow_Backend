@@ -6,6 +6,7 @@ using System.Security.Claims;
 
 namespace SponsorshipWorkflow.Api.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RequestsController : ControllerBase
@@ -17,7 +18,7 @@ namespace SponsorshipWorkflow.Api.Controllers
             _service = service;
         }
 
-        [Authorize]
+        
         [HttpPost("draft")]
         public async Task<IActionResult> SaveDraft([FromBody] SponsorshipRequestDto dto)
         {
@@ -77,6 +78,71 @@ namespace SponsorshipWorkflow.Api.Controllers
             var data = await _service.GetSponsorshipRequestsByIdAsync(id);
 
             return Ok(data);
+        }
+
+        [HttpPut("approveByManager/{id}")]
+        public async Task<IActionResult> ApproveByManager(Guid id)
+        {
+            var managerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(managerId))
+                return Unauthorized();
+
+            await _service.ManagerApproveAsync(id, managerId);
+
+            return Ok(new
+            {
+                message = "Request approved by manager"
+            });
+        }
+
+        [HttpPut("rejectedByManager/{id}")]
+        public async Task<IActionResult> RejectedByManager(Guid id)
+        {
+            var financeId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(financeId))
+                return Unauthorized();
+
+            await _service.ManagerRejectAsync(id, financeId);
+
+            return Ok(new
+            {
+                message = "Request rejected by finance"
+            });
+        }
+
+        [HttpPut("approveByFinance/{id}")]
+        public async Task<IActionResult> ApproveByFinance(Guid id)
+        {
+            var financeId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(financeId))
+                return Unauthorized();
+
+            await _service.FinanceApproveAsync(id, financeId);
+
+            return Ok(new
+            {
+                message = "Request approved by manager"
+            });
+        }
+
+
+        [HttpPut("rejectedByFinance/{id}")]
+        public async Task<IActionResult> RejectedByFinance(Guid id)
+        {
+            var financeId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(financeId))
+                return Unauthorized();
+
+            await _service.FinanceRejectAsync(id, financeId);
+
+            return Ok(new
+            {
+                message = "Request rejected by finance"
+            });
         }
     }
 }

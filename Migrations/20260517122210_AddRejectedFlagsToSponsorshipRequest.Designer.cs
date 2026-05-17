@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SponsorshipWorkflow.Api.Data;
@@ -11,9 +12,11 @@ using SponsorshipWorkflow.Api.Data;
 namespace SponsorshipWorkflow.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260517122210_AddRejectedFlagsToSponsorshipRequest")]
+    partial class AddRejectedFlagsToSponsorshipRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,15 +79,7 @@ namespace SponsorshipWorkflow.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("FinanceId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("FinanceRemarks")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ManagerId")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -93,6 +88,20 @@ namespace SponsorshipWorkflow.Api.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("RejectedByFinance")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("RejectedByManager")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("RejectedFinanceId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("RejectedManagerId")
                         .IsRequired()
                         .HasColumnType("text");
 

@@ -124,5 +124,105 @@ namespace SponsorshipWorkflow.Api.Services
                 throw new Exception(inner ?? ex.Message);
             }
         }
+
+        public async Task<Guid> ManagerApproveAsync(SponsorshipRequest entity, string managerId)
+        {
+            entity.ManagerId = managerId;
+            entity.Status = "Pending Finance Review";
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            _context.SponsorshipRequests.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
+
+        public async Task<Guid> ManagerRejectAsync(SponsorshipRequest entity, string managerId)
+        {
+            entity.ManagerId = managerId;
+            entity.Status = "Rejected By Manager";
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            _context.SponsorshipRequests.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
+
+        public async Task<Guid> FinanceApproveAsync(SponsorshipRequest entity, string financeId)
+        {
+            entity.FinanceId = financeId;
+            entity.Status = "Approved";
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            _context.SponsorshipRequests.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
+
+        public async Task<Guid> FinanceRejectAsync(SponsorshipRequest entity, string financeId)
+        {
+            entity.FinanceId = financeId;
+            entity.Status = "Rejected By Finance";
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            _context.SponsorshipRequests.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
+
+        public async Task<Guid> ManagerApproveAsync(Guid id, string managerId)
+        {
+            var entity = await _context.SponsorshipRequests
+                    .FirstOrDefaultAsync(x => x.Id == id);
+
+            entity.ManagerId = managerId;
+            entity.Status = "Pending Finance Review";
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            _context.SponsorshipRequests.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
+
+        public async Task<Guid> ManagerRejectAsync(Guid id, string managerId)
+        {
+            var entity = await _context.SponsorshipRequests
+                     .FirstOrDefaultAsync(x => x.Id == id);
+
+            entity.ManagerId = managerId;
+            entity.Status = "Rejected By Manager";
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            _context.SponsorshipRequests.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
+
+        public async Task<Guid> FinanceApproveAsync(Guid id, string financeId)
+        {
+            var entity = await _context.SponsorshipRequests
+                     .FirstOrDefaultAsync(x => x.Id == id);
+
+            entity.FinanceId = financeId;
+            entity.Status = "Pending Finance Review";
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            _context.SponsorshipRequests.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
+
+        public async Task<Guid> FinanceRejectAsync(Guid id, string financeId)
+        {
+            var entity = await _context.SponsorshipRequests
+                       .FirstOrDefaultAsync(x => x.Id == id);
+
+            entity.FinanceId = financeId;
+            entity.Status = "Rejected By Finance";
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            _context.SponsorshipRequests.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
     }
 }

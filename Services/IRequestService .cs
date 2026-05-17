@@ -11,5 +11,12 @@ namespace SponsorshipWorkflow.Api.Services
 
         Task<List<SponsorshipRequest>> GetAllMyRequests(string email, string role);
         Task<SponsorshipRequest?> GetSponsorshipRequestsByIdAsync(Guid id);
+
+        Task<Guid> ManagerApproveAsync(Guid id, string managerId);
+        Task<Guid> ManagerRejectAsync(Guid id, string managerId);
+
+        Task<Guid> FinanceApproveAsync(Guid id, string financeId);
+        Task<Guid> FinanceRejectAsync(Guid id, string financeId);
+
     }
 }

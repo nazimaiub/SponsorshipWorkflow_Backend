@@ -33,7 +33,9 @@ namespace SponsorshipWorkflow.Api.Models
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
         public DateTime? UpdatedAt { get; set; } = DateTime.UtcNow;
+        public string ManagerId { get; set; } = string.Empty;
 
+        public string FinanceId { get; set; } = string.Empty;
 
         //public string Remarks { get; set; } = string.Empty;
     }

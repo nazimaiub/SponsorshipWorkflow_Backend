@@ -35,6 +35,8 @@ namespace SponsorshipWorkflow.Api.Services
         {
             return await _repo.GetSponsorshipRequestsByIdAsync(id);
         }
+
+
         private SponsorshipRequest Map(SponsorshipRequestDto dto, string status)
         {
             return new SponsorshipRequest
@@ -52,6 +54,26 @@ namespace SponsorshipWorkflow.Api.Services
                 Status = status,
                 CreatedAt = DateTime.UtcNow
             };
+        }
+
+        public async Task<Guid> ManagerApproveAsync(Guid id, string managerId)
+        {
+             return await _repo.ManagerApproveAsync(id,managerId);
+        }
+
+        public async Task<Guid> ManagerRejectAsync(Guid id, string managerId)
+        {
+            return await _repo.ManagerRejectAsync(id,managerId);
+        }
+
+        public async Task<Guid> FinanceApproveAsync(Guid id, string financeId)
+        {
+            return await _repo.FinanceApproveAsync(id, financeId);
+        }
+
+        public async Task<Guid> FinanceRejectAsync(Guid id, string financeId)
+        {
+            return await _repo.FinanceRejectAsync(id, financeId);
         }
     }
 }
