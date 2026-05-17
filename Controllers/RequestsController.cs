@@ -80,7 +80,7 @@ namespace SponsorshipWorkflow.Api.Controllers
             return Ok(data);
         }
 
-        [HttpPut("approveByManager/{id}")]
+        [HttpGet("approveByManager/{id}")]
         public async Task<IActionResult> ApproveByManager(Guid id)
         {
             var managerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -96,7 +96,7 @@ namespace SponsorshipWorkflow.Api.Controllers
             });
         }
 
-        [HttpPut("rejectedByManager/{id}")]
+        [HttpGet("rejectedByManager/{id}")]
         public async Task<IActionResult> RejectedByManager(Guid id)
         {
             var financeId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -112,7 +112,7 @@ namespace SponsorshipWorkflow.Api.Controllers
             });
         }
 
-        [HttpPut("approveByFinance/{id}")]
+        [HttpGet("approveByFinance/{id}")]
         public async Task<IActionResult> ApproveByFinance(Guid id)
         {
             var financeId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -129,7 +129,7 @@ namespace SponsorshipWorkflow.Api.Controllers
         }
 
 
-        [HttpPut("rejectedByFinance/{id}")]
+        [HttpGet("rejectedByFinance/{id}")]
         public async Task<IActionResult> RejectedByFinance(Guid id)
         {
             var financeId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
