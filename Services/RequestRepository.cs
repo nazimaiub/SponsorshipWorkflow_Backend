@@ -22,7 +22,7 @@ namespace SponsorshipWorkflow.Api.Services
             }
             else if (role == "manager")
             {
-                return await _context.SponsorshipRequests.Where(x => x.Status == "Pending Manager Approval").ToListAsync();
+                return await _context.SponsorshipRequests.Where(x => (x.Status == "Pending Manager Approval") || (x.Status == "Rejected By Finance")).ToListAsync();
 
             }
             else if (role == "finance")
