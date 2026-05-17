@@ -10,6 +10,7 @@ namespace SponsorshipWorkflow.Api.Services
         Task<Guid> SubmitAsync(SponsorshipRequestDto dto);
 
         Task<List<SponsorshipRequest>> GetAllMyRequests(string email, string role);
+        Task<List<RequestWorkflowHistory>> GetHistories();
         Task<SponsorshipRequest?> GetSponsorshipRequestsByIdAsync(Guid id);
 
         Task<Guid> CancelByRequestor(Guid id);

@@ -11,7 +11,7 @@ namespace SponsorshipWorkflow.Api.Services
         Task<Guid> SubmitAsync(SponsorshipRequest entity);
 
         Task<List<SponsorshipRequest>> GetAllMyRequests(string userEmail, string role);
-
+        Task<List<RequestWorkflowHistory>> GetHistories();
         Task<Guid> CancelByRequestor(Guid id);
         Task<Guid> ManagerApproveAsync(Guid id, string managerId, string remarks);
         Task<Guid> ManagerRejectAsync(Guid id, string managerId, string remarks);

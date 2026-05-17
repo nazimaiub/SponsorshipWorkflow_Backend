@@ -80,5 +80,10 @@ namespace SponsorshipWorkflow.Api.Services
         {
             return await _repo.FinanceRejectAsync(id, financeId,remarks);
         }
+
+        public async Task<List<RequestWorkflowHistory>> GetHistories()
+        {
+            return await _repo.GetHistories();
+        }
     }
 }

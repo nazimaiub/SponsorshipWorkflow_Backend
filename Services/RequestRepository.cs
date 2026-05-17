@@ -45,6 +45,11 @@ namespace SponsorshipWorkflow.Api.Services
             }
         }
 
+        public async Task<List<RequestWorkflowHistory>> GetHistories()
+        {
+            return await _context.RequestWorkflowHistories.OrderByDescending(x => x.ActionDate).ToListAsync();
+        }
+
         public async Task<SponsorshipRequest?> GetSponsorshipRequestsByIdAsync(Guid id)
         {
             return await _context.SponsorshipRequests

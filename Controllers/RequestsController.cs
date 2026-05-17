@@ -71,6 +71,16 @@ namespace SponsorshipWorkflow.Api.Controllers
             return Ok(data);
         }
 
+        [HttpGet("getHistories")]
+        public async Task<IActionResult> GetHistories()
+        {
+            var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            var data = await _service.GetHistories();
+
+            return Ok(data);
+        }
+
         [HttpGet("request-by-id/{id}")]
         public async Task<IActionResult> GetSponsorshipRequestsByIdAsync(Guid id)
         {
