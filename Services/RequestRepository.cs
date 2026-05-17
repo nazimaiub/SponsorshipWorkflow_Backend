@@ -93,8 +93,7 @@ namespace SponsorshipWorkflow.Api.Services
 
                 if (entity.Id != Guid.Empty)
                 {
-                    request = await _context.SponsorshipRequests
-                        .FirstOrDefaultAsync(x => x.Id == entity.Id);
+                    request = await _context.SponsorshipRequests.FirstOrDefaultAsync(x => x.Id == entity.Id);
 
                     if (request == null)
                         throw new Exception("Request not found");
@@ -124,7 +123,7 @@ namespace SponsorshipWorkflow.Api.Services
                 var history = new RequestWorkflowHistory
                 {
                     RequestId = request.Id,
-                    ActionByUserId = request.RequestorId, 
+                    ActionByUserId = request.RequestorId,
                     OldStatus = "Draft",
                     NewStatus = "Pending Manager Approval",
                     Remarks = request.RequestorRemarks,
@@ -153,6 +152,17 @@ namespace SponsorshipWorkflow.Api.Services
             entity.UpdatedAt = DateTime.UtcNow;
 
             _context.SponsorshipRequests.Update(entity);
+
+            var history = new RequestWorkflowHistory
+            {
+                RequestId = entity.Id,
+                ActionByUserId = entity.RequestorId,
+                OldStatus = "Pending Manager Approval",
+                NewStatus = "Cancel By Requestor",
+                Remarks = entity.RequestorRemarks,
+                ActionDate = DateTime.UtcNow
+            };
+            await _context.RequestWorkflowHistories.AddAsync(history);
             await _context.SaveChangesAsync();
             return entity.Id;
         }
@@ -166,8 +176,19 @@ namespace SponsorshipWorkflow.Api.Services
             entity.Status = "Pending Finance Review";
             entity.UpdatedAt = DateTime.UtcNow;
             entity.ManagerRemarks = remarks;
-
             _context.SponsorshipRequests.Update(entity);
+
+            var history = new RequestWorkflowHistory
+            {
+                RequestId = entity.Id,
+                ActionByUserId = entity.RequestorId,
+                OldStatus = "Pending Manager Approval",
+                NewStatus = "Pending Finance Approval",
+                Remarks = entity.ManagerRemarks,
+                ActionDate = DateTime.UtcNow
+            };
+
+            await _context.RequestWorkflowHistories.AddAsync(history);
             await _context.SaveChangesAsync();
             return entity.Id;
         }
@@ -181,8 +202,19 @@ namespace SponsorshipWorkflow.Api.Services
             entity.Status = "Rejected By Manager";
             entity.UpdatedAt = DateTime.UtcNow;
             entity.ManagerRemarks = remarks;
-
             _context.SponsorshipRequests.Update(entity);
+
+            var history = new RequestWorkflowHistory
+            {
+                RequestId = entity.Id,
+                ActionByUserId = entity.RequestorId,
+                OldStatus = "Pending Manager Approval",
+                NewStatus = "Rejected By Manager",
+                Remarks = entity.ManagerRemarks,
+                ActionDate = DateTime.UtcNow
+            };
+            await _context.RequestWorkflowHistories.AddAsync(history);
+
             await _context.SaveChangesAsync();
             return entity.Id;
         }
@@ -196,8 +228,18 @@ namespace SponsorshipWorkflow.Api.Services
             entity.Status = "Approved";
             entity.UpdatedAt = DateTime.UtcNow;
             entity.FinanceRemarks = remarks;
-
             _context.SponsorshipRequests.Update(entity);
+
+            var history = new RequestWorkflowHistory
+            {
+                RequestId = entity.Id,
+                ActionByUserId = entity.RequestorId,
+                OldStatus = "Pending Finance Approval",
+                NewStatus = "Approved",
+                Remarks = entity.FinanceRemarks,
+                ActionDate = DateTime.UtcNow
+            };
+            await _context.RequestWorkflowHistories.AddAsync(history);
             await _context.SaveChangesAsync();
             return entity.Id;
         }
@@ -213,6 +255,18 @@ namespace SponsorshipWorkflow.Api.Services
             entity.FinanceRemarks = remarks;
 
             _context.SponsorshipRequests.Update(entity);
+
+            var history = new RequestWorkflowHistory
+            {
+                RequestId = entity.Id,
+                ActionByUserId = entity.RequestorId,
+                OldStatus = "Pending Finance Approval",
+                NewStatus = "Rejected By Finance",
+                Remarks = entity.FinanceRemarks,
+                ActionDate = DateTime.UtcNow
+            };
+            await _context.RequestWorkflowHistories.AddAsync(history);
+
             await _context.SaveChangesAsync();
             return entity.Id;
         }
