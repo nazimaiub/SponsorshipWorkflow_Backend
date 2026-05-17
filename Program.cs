@@ -96,23 +96,21 @@ builder.Services.AddCors(options =>
                 .AllowAnyMethod();
         });
 });
-var app = builder.Build();
 
 // Render Port Binding
 var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
 builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
+var app = builder.Build();
 
-    app.UseSwaggerUI(options =>
-    {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-        options.RoutePrefix = string.Empty;
-    });
-}
+// Configure the HTTP request pipeline.
+app.UseSwagger();
+
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+    options.RoutePrefix = string.Empty;
+});
 
 app.UseHttpsRedirection();
 
