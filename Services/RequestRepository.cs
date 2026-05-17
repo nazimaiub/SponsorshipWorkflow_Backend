@@ -125,49 +125,6 @@ namespace SponsorshipWorkflow.Api.Services
             }
         }
 
-        public async Task<Guid> ManagerApproveAsync(SponsorshipRequest entity, string managerId)
-        {
-            entity.ManagerId = managerId;
-            entity.Status = "Pending Finance Review";
-            entity.UpdatedAt = DateTime.UtcNow;
-
-            _context.SponsorshipRequests.Update(entity);
-            await _context.SaveChangesAsync();
-            return entity.Id;
-        }
-
-        public async Task<Guid> ManagerRejectAsync(SponsorshipRequest entity, string managerId)
-        {
-            entity.ManagerId = managerId;
-            entity.Status = "Rejected By Manager";
-            entity.UpdatedAt = DateTime.UtcNow;
-
-            _context.SponsorshipRequests.Update(entity);
-            await _context.SaveChangesAsync();
-            return entity.Id;
-        }
-
-        public async Task<Guid> FinanceApproveAsync(SponsorshipRequest entity, string financeId)
-        {
-            entity.FinanceId = financeId;
-            entity.Status = "Approved";
-            entity.UpdatedAt = DateTime.UtcNow;
-
-            _context.SponsorshipRequests.Update(entity);
-            await _context.SaveChangesAsync();
-            return entity.Id;
-        }
-
-        public async Task<Guid> FinanceRejectAsync(SponsorshipRequest entity, string financeId)
-        {
-            entity.FinanceId = financeId;
-            entity.Status = "Rejected By Finance";
-            entity.UpdatedAt = DateTime.UtcNow;
-
-            _context.SponsorshipRequests.Update(entity);
-            await _context.SaveChangesAsync();
-            return entity.Id;
-        }
 
         public async Task<Guid> ManagerApproveAsync(Guid id, string managerId)
         {
