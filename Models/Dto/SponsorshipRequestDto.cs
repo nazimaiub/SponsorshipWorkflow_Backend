@@ -2,6 +2,7 @@
 {
     public class SponsorshipRequestDto
     {
+        public Guid? Id { get; set; }
         public string RequestTitle { get; set; }
         public string RequestorId { get; set; } = string.Empty;
         public string Department { get; set; }

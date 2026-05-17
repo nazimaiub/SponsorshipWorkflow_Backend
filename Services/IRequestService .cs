@@ -5,9 +5,9 @@ namespace SponsorshipWorkflow.Api.Services
 {
     public interface IRequestService
     {
-        Task SaveDraftAsync(SponsorshipRequestDto dto);
+        Task<Guid> SaveDraftAsync(SponsorshipRequestDto dto);
 
-        Task SubmitAsync(SponsorshipRequestDto dto);
+        Task<Guid> SubmitAsync(SponsorshipRequestDto dto);
 
         Task<List<SponsorshipRequest>> GetAllMyRequests(string email);
         Task<SponsorshipRequest?> GetSponsorshipRequestsByIdAsync(Guid id);

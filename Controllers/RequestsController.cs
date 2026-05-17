@@ -25,8 +25,12 @@ namespace SponsorshipWorkflow.Api.Controllers
             {
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 dto.RequestorId = userEmail;
-                await _service.SaveDraftAsync(dto);
-                return Ok(new { message = "Draft saved successfully" });
+                var result= await _service.SaveDraftAsync(dto);
+                return Ok(new
+                {
+                    message = "Draft saved successfully",
+                    id = result
+                });
             }
             catch (Exception ex)
             {
@@ -42,8 +46,12 @@ namespace SponsorshipWorkflow.Api.Controllers
             {
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 dto.RequestorId = userEmail;
-                await _service.SubmitAsync(dto);
-                return Ok(new { message = "Request submitted successfully" });
+                var result = await _service.SubmitAsync(dto);
+                return Ok(new
+                {
+                    message = "Request submitted successfully",
+                    id = result
+                });
             }
             catch (Exception ex)
             {

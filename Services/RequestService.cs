@@ -12,18 +12,18 @@ namespace SponsorshipWorkflow.Api.Services
             _repo = repo;
         }
 
-        public async Task SaveDraftAsync(SponsorshipRequestDto dto)
+        public async Task<Guid> SaveDraftAsync(SponsorshipRequestDto dto)
         {
             var entity = Map(dto, "Draft");
 
-            await _repo.SaveDraftAsync(entity);
+           return await _repo.SaveDraftAsync(entity);
         }
 
-        public async Task SubmitAsync(SponsorshipRequestDto dto)
+        public async Task<Guid> SubmitAsync(SponsorshipRequestDto dto)
         {
             var entity = Map(dto, "Pending Manager Approval");
 
-            await _repo.SubmitAsync(entity);
+            return await _repo.SubmitAsync(entity);
         }
 
         public async Task<List<SponsorshipRequest>> GetAllMyRequests(string userEmail)
@@ -39,7 +39,7 @@ namespace SponsorshipWorkflow.Api.Services
         {
             return new SponsorshipRequest
             {
-                Id = Guid.NewGuid(),
+                Id = dto.Id ?? Guid.NewGuid(),
                 RequestorId = dto.RequestorId,
                 RequestTitle = dto.RequestTitle,
                 Department = dto.Department,
