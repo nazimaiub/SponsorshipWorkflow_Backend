@@ -61,6 +61,7 @@ namespace SponsorshipWorkflow.Api.Services
                         existing.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
                         existing.RequestedAmount = entity.RequestedAmount;
                         existing.Purpose = entity.Purpose;
+                        existing.Status = "Draft";
                         existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
                         existing.UpdatedAt = DateTime.UtcNow;
                         await _context.SaveChangesAsync();
