@@ -64,7 +64,8 @@ namespace SponsorshipWorkflow.Api.Controllers
         public async Task<IActionResult> GetAllMyRequests()
         {
             var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
-            var data = await _service.GetAllMyRequests(userEmail);
+            var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
+            var data = await _service.GetAllMyRequests(userEmail,userRole);
 
             return Ok(data);
         }

@@ -9,7 +9,7 @@ namespace SponsorshipWorkflow.Api.Services
 
         Task<Guid> SubmitAsync(SponsorshipRequestDto dto);
 
-        Task<List<SponsorshipRequest>> GetAllMyRequests(string email);
+        Task<List<SponsorshipRequest>> GetAllMyRequests(string email, string role);
         Task<SponsorshipRequest?> GetSponsorshipRequestsByIdAsync(Guid id);
     }
 }

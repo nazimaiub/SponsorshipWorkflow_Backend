@@ -26,9 +26,9 @@ namespace SponsorshipWorkflow.Api.Services
             return await _repo.SubmitAsync(entity);
         }
 
-        public async Task<List<SponsorshipRequest>> GetAllMyRequests(string userEmail)
+        public async Task<List<SponsorshipRequest>> GetAllMyRequests(string userEmail,string role)
         {
-            return await _repo.GetAllMyRequests(userEmail);
+            return await _repo.GetAllMyRequests(userEmail,role);
         }
 
         public async Task<SponsorshipRequest?> GetSponsorshipRequestsByIdAsync(Guid id)

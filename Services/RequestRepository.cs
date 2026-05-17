@@ -13,9 +13,28 @@ namespace SponsorshipWorkflow.Api.Services
             _context = context;
         }
 
-        public async Task<List<SponsorshipRequest>> GetAllMyRequests(string userEmail)
+        public async Task<List<SponsorshipRequest>> GetAllMyRequests(string userEmail, string role)
         {
-            return await _context.SponsorshipRequests.Where(x=>x.RequestorId == userEmail).ToListAsync();
+            if (role == "requestor")
+            {
+                return await _context.SponsorshipRequests.Where(x => x.RequestorId == userEmail).ToListAsync();
+
+            }
+            else if (role == "manager")
+            {
+                return await _context.SponsorshipRequests.Where(x => x.Status == "Pending Manager Approval").ToListAsync();
+
+            }
+            else if (role == "finance")
+            {
+                return await _context.SponsorshipRequests.Where(x => x.Status == "Pending Finance Review").ToListAsync();
+
+            }
+            else
+            {
+                return await _context.SponsorshipRequests.ToListAsync();
+
+            }
         }
 
         public async Task<SponsorshipRequest?> GetSponsorshipRequestsByIdAsync(Guid id)
