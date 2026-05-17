@@ -56,24 +56,29 @@ namespace SponsorshipWorkflow.Api.Services
             };
         }
 
-        public async Task<Guid> ManagerApproveAsync(Guid id, string managerId)
+        public async Task<Guid> CancelByRequestor(Guid id)
         {
-             return await _repo.ManagerApproveAsync(id,managerId);
+            return await _repo.CancelByRequestor(id);
+
+        }
+        public async Task<Guid> ManagerApproveAsync(Guid id, string managerId, string remarks)
+        {
+             return await _repo.ManagerApproveAsync(id,managerId,remarks);
         }
 
-        public async Task<Guid> ManagerRejectAsync(Guid id, string managerId)
+        public async Task<Guid> ManagerRejectAsync(Guid id, string managerId, string remarks)
         {
-            return await _repo.ManagerRejectAsync(id,managerId);
+            return await _repo.ManagerRejectAsync(id,managerId,remarks);
         }
 
-        public async Task<Guid> FinanceApproveAsync(Guid id, string financeId)
+        public async Task<Guid> FinanceApproveAsync(Guid id, string financeId, string remarks)
         {
-            return await _repo.FinanceApproveAsync(id, financeId);
+            return await _repo.FinanceApproveAsync(id, financeId,remarks);
         }
 
-        public async Task<Guid> FinanceRejectAsync(Guid id, string financeId)
+        public async Task<Guid> FinanceRejectAsync(Guid id, string financeId, string remarks)
         {
-            return await _repo.FinanceRejectAsync(id, financeId);
+            return await _repo.FinanceRejectAsync(id, financeId,remarks);
         }
     }
 }

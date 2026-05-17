@@ -125,8 +125,20 @@ namespace SponsorshipWorkflow.Api.Services
             }
         }
 
+        public async Task<Guid> CancelByRequestor(Guid id)
+        {
+            var entity = await _context.SponsorshipRequests
+                     .FirstOrDefaultAsync(x => x.Id == id);
 
-        public async Task<Guid> ManagerApproveAsync(Guid id, string managerId)
+            entity.Status = "Cancel By Requestor";
+            entity.UpdatedAt = DateTime.UtcNow;
+
+            _context.SponsorshipRequests.Update(entity);
+            await _context.SaveChangesAsync();
+            return entity.Id;
+        }
+
+        public async Task<Guid> ManagerApproveAsync(Guid id, string managerId, string remarks)
         {
             var entity = await _context.SponsorshipRequests
                     .FirstOrDefaultAsync(x => x.Id == id);
@@ -134,13 +146,14 @@ namespace SponsorshipWorkflow.Api.Services
             entity.ManagerId = managerId;
             entity.Status = "Pending Finance Review";
             entity.UpdatedAt = DateTime.UtcNow;
+            entity.ManagerRemarks = remarks;
 
             _context.SponsorshipRequests.Update(entity);
             await _context.SaveChangesAsync();
             return entity.Id;
         }
 
-        public async Task<Guid> ManagerRejectAsync(Guid id, string managerId)
+        public async Task<Guid> ManagerRejectAsync(Guid id, string managerId, string remarks)
         {
             var entity = await _context.SponsorshipRequests
                      .FirstOrDefaultAsync(x => x.Id == id);
@@ -148,13 +161,14 @@ namespace SponsorshipWorkflow.Api.Services
             entity.ManagerId = managerId;
             entity.Status = "Rejected By Manager";
             entity.UpdatedAt = DateTime.UtcNow;
+            entity.ManagerRemarks = remarks;
 
             _context.SponsorshipRequests.Update(entity);
             await _context.SaveChangesAsync();
             return entity.Id;
         }
 
-        public async Task<Guid> FinanceApproveAsync(Guid id, string financeId)
+        public async Task<Guid> FinanceApproveAsync(Guid id, string financeId, string remarks)
         {
             var entity = await _context.SponsorshipRequests
                      .FirstOrDefaultAsync(x => x.Id == id);
@@ -162,13 +176,14 @@ namespace SponsorshipWorkflow.Api.Services
             entity.FinanceId = financeId;
             entity.Status = "Pending Finance Review";
             entity.UpdatedAt = DateTime.UtcNow;
+            entity.FinanceRemarks = remarks;
 
             _context.SponsorshipRequests.Update(entity);
             await _context.SaveChangesAsync();
             return entity.Id;
         }
 
-        public async Task<Guid> FinanceRejectAsync(Guid id, string financeId)
+        public async Task<Guid> FinanceRejectAsync(Guid id, string financeId, string remarks)
         {
             var entity = await _context.SponsorshipRequests
                        .FirstOrDefaultAsync(x => x.Id == id);
@@ -176,6 +191,7 @@ namespace SponsorshipWorkflow.Api.Services
             entity.FinanceId = financeId;
             entity.Status = "Rejected By Finance";
             entity.UpdatedAt = DateTime.UtcNow;
+            entity.FinanceRemarks = remarks;
 
             _context.SponsorshipRequests.Update(entity);
             await _context.SaveChangesAsync();

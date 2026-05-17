@@ -12,11 +12,13 @@ namespace SponsorshipWorkflow.Api.Services
         Task<List<SponsorshipRequest>> GetAllMyRequests(string email, string role);
         Task<SponsorshipRequest?> GetSponsorshipRequestsByIdAsync(Guid id);
 
-        Task<Guid> ManagerApproveAsync(Guid id, string managerId);
-        Task<Guid> ManagerRejectAsync(Guid id, string managerId);
+        Task<Guid> CancelByRequestor(Guid id);
 
-        Task<Guid> FinanceApproveAsync(Guid id, string financeId);
-        Task<Guid> FinanceRejectAsync(Guid id, string financeId);
+        Task<Guid> ManagerApproveAsync(Guid id, string managerId, string remarks);
+        Task<Guid> ManagerRejectAsync(Guid id, string managerId, string remarks);
+
+        Task<Guid> FinanceApproveAsync(Guid id, string financeId, string remarks);
+        Task<Guid> FinanceRejectAsync(Guid id, string financeId, string remarks);
 
     }
 }

@@ -18,7 +18,7 @@ namespace SponsorshipWorkflow.Api.Controllers
             _service = service;
         }
 
-        
+
         [HttpPost("draft")]
         public async Task<IActionResult> SaveDraft([FromBody] SponsorshipRequestDto dto)
         {
@@ -26,7 +26,7 @@ namespace SponsorshipWorkflow.Api.Controllers
             {
                 var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
                 dto.RequestorId = userEmail;
-                var result= await _service.SaveDraftAsync(dto);
+                var result = await _service.SaveDraftAsync(dto);
                 return Ok(new
                 {
                     message = "Draft saved successfully",
@@ -66,7 +66,7 @@ namespace SponsorshipWorkflow.Api.Controllers
         {
             var userEmail = User.FindFirst(ClaimTypes.Email)?.Value;
             var userRole = User.FindFirst(ClaimTypes.Role)?.Value;
-            var data = await _service.GetAllMyRequests(userEmail,userRole);
+            var data = await _service.GetAllMyRequests(userEmail, userRole);
 
             return Ok(data);
         }
@@ -80,64 +80,91 @@ namespace SponsorshipWorkflow.Api.Controllers
             return Ok(data);
         }
 
-        [HttpGet("approveByManager/{id}")]
-        public async Task<IActionResult> ApproveByManager(Guid id)
+        [HttpGet("cancelByRequestor/{id}")]
+        public async Task<IActionResult> CancelByRequestor(
+            Guid id)
         {
             var managerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(managerId))
                 return Unauthorized();
 
-            await _service.ManagerApproveAsync(id, managerId);
+            await _service.CancelByRequestor(id);
+
+            return Ok(new
+            {
+                message = "Request cancel by requestor"
+            });
+        }
+
+        [HttpGet("approveByManager/{id}")]
+        public async Task<IActionResult> ApproveByManager(
+            Guid id,
+            string remarks)
+        {
+            var managerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(managerId))
+                return Unauthorized();
+
+            await _service.ManagerApproveAsync(id, managerId, remarks);
 
             return Ok(new
             {
                 message = "Request approved by manager"
             });
         }
+
 
         [HttpGet("rejectedByManager/{id}")]
-        public async Task<IActionResult> RejectedByManager(Guid id)
+        public async Task<IActionResult> RejectedByManager(
+            Guid id,
+            string remarks)
         {
-            var financeId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var managerId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            if (string.IsNullOrEmpty(financeId))
+            if (string.IsNullOrEmpty(managerId))
                 return Unauthorized();
 
-            await _service.ManagerRejectAsync(id, financeId);
+            await _service.ManagerRejectAsync(id, managerId, remarks);
 
             return Ok(new
             {
-                message = "Request rejected by finance"
+                message = "Request rejected by manager"
             });
         }
 
+
         [HttpGet("approveByFinance/{id}")]
-        public async Task<IActionResult> ApproveByFinance(Guid id)
+        public async Task<IActionResult> ApproveByFinance(
+            Guid id,
+            string remarks)
         {
             var financeId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(financeId))
                 return Unauthorized();
 
-            await _service.FinanceApproveAsync(id, financeId);
+            await _service.FinanceApproveAsync(id, financeId, remarks);
 
             return Ok(new
             {
-                message = "Request approved by manager"
+                message = "Request approved by finance"
             });
         }
 
 
         [HttpGet("rejectedByFinance/{id}")]
-        public async Task<IActionResult> RejectedByFinance(Guid id)
+        public async Task<IActionResult> RejectedByFinance(
+            Guid id,
+            string remarks)
         {
             var financeId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if (string.IsNullOrEmpty(financeId))
                 return Unauthorized();
 
-            await _service.FinanceRejectAsync(id, financeId);
+            await _service.FinanceRejectAsync(id, financeId, remarks);
 
             return Ok(new
             {
