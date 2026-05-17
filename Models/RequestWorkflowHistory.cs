@@ -7,7 +7,7 @@ public class RequestWorkflowHistory
 
     public Guid RequestId { get; set; }
 
-    public Guid ActionByUserId { get; set; }
+    public string ActionByUserId { get; set; }
 
     public string OldStatus { get; set; }
 

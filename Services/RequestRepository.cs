@@ -89,35 +89,53 @@ namespace SponsorshipWorkflow.Api.Services
         {
             try
             {
+                SponsorshipRequest request;
+
                 if (entity.Id != Guid.Empty)
                 {
-                    var existing = await _context.SponsorshipRequests
-                    .FirstOrDefaultAsync(x => x.Id == entity.Id);
+                    request = await _context.SponsorshipRequests
+                        .FirstOrDefaultAsync(x => x.Id == entity.Id);
 
-                    if (existing != null)
-                    {
-                        existing.RequestTitle = entity.RequestTitle;
-                        existing.Department = entity.Department;
-                        existing.SponsorshipType = entity.SponsorshipType;
-                        existing.EventName = entity.EventName;
-                        existing.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
-                        existing.RequestedAmount = entity.RequestedAmount;
-                        existing.Purpose = entity.Purpose;
-                        existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
-                        existing.UpdatedAt = DateTime.UtcNow;
-                        existing.Status = "Pending Manager Approval";
-                        await _context.SaveChangesAsync();
-                        return existing.Id;
-                    }
+                    if (request == null)
+                        throw new Exception("Request not found");
+
+                    request.RequestTitle = entity.RequestTitle;
+                    request.Department = entity.Department;
+                    request.SponsorshipType = entity.SponsorshipType;
+                    request.EventName = entity.EventName;
+                    request.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
+                    request.RequestedAmount = entity.RequestedAmount;
+                    request.Purpose = entity.Purpose;
+                    request.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
+                    request.UpdatedAt = DateTime.UtcNow;
+                    request.Status = "Pending Manager Approval";
                 }
-                entity.Id = Guid.NewGuid();
-                entity.Status = "Pending Manager Approval";
-                entity.CreatedAt = DateTime.UtcNow;
-                entity.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
-                await _context.SponsorshipRequests.AddAsync(entity);
+                else
+                {
+                    request = entity;
+                    request.Id = Guid.NewGuid();
+                    request.Status = "Pending Manager Approval";
+                    request.CreatedAt = DateTime.UtcNow;
+                    request.EventDate = DateTime.SpecifyKind(entity.EventDate ?? DateTime.UtcNow, DateTimeKind.Utc);
+
+                    await _context.SponsorshipRequests.AddAsync(request);
+                }
+
+                var history = new RequestWorkflowHistory
+                {
+                    RequestId = request.Id,
+                    ActionByUserId = request.RequestorId, 
+                    OldStatus = "Draft",
+                    NewStatus = "Pending Manager Approval",
+                    Remarks = request.RequestorRemarks,
+                    ActionDate = DateTime.UtcNow
+                };
+
+                await _context.RequestWorkflowHistories.AddAsync(history);
+
                 await _context.SaveChangesAsync();
 
-                return entity.Id;
+                return request.Id;
             }
             catch (Exception ex)
             {

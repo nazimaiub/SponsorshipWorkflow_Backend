@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using SponsorshipWorkflow.Api.Data;
@@ -11,9 +12,11 @@ using SponsorshipWorkflow.Api.Data;
 namespace SponsorshipWorkflow.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260517175414_ChangeRequestorIdToString")]
+    partial class ChangeRequestorIdToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -30,9 +33,8 @@ namespace SponsorshipWorkflow.Api.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("ActionByUserId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<Guid>("ActionByUserId")
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("ActionDate")
                         .HasColumnType("timestamp with time zone");
@@ -49,8 +51,9 @@ namespace SponsorshipWorkflow.Api.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid>("RequestId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("RequestId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
