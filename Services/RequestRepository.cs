@@ -175,7 +175,7 @@ namespace SponsorshipWorkflow.Api.Services
                      .FirstOrDefaultAsync(x => x.Id == id);
 
             entity.FinanceId = financeId;
-            entity.Status = "Pending Finance Review";
+            entity.Status = "Approved";
             entity.UpdatedAt = DateTime.UtcNow;
             entity.FinanceRemarks = remarks;
 
