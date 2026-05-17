@@ -84,6 +84,7 @@ namespace SponsorshipWorkflow.Api.Services
                         existing.Purpose = entity.Purpose;
                         existing.RequestorRemarks = entity.RequestorRemarks ?? string.Empty;
                         entity.UpdatedAt = DateTime.UtcNow;
+                        entity.Status = "Pending Manager Approval";
                         await _context.SaveChangesAsync();
                         return existing.Id;
                     }
