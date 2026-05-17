@@ -17,23 +17,31 @@ namespace SponsorshipWorkflow.Api.Services
         {
             if (role == "requestor")
             {
-                return await _context.SponsorshipRequests.Where(x => x.RequestorId == userEmail).ToListAsync();
-
+                return await _context.SponsorshipRequests
+                    .Where(x => x.RequestorId == userEmail)
+                    .OrderByDescending(x => x.CreatedAt)
+                    .ToListAsync();
             }
             else if (role == "manager")
             {
-                return await _context.SponsorshipRequests.Where(x => (x.Status == "Pending Manager Approval") || (x.Status == "Rejected By Finance")).ToListAsync();
-
+                return await _context.SponsorshipRequests
+                    .Where(x => x.Status == "Pending Manager Approval"
+                             || x.Status == "Rejected By Finance")
+                    .OrderByDescending(x => x.CreatedAt)
+                    .ToListAsync();
             }
             else if (role == "finance")
             {
-                return await _context.SponsorshipRequests.Where(x => x.Status == "Pending Finance Review").ToListAsync();
-
+                return await _context.SponsorshipRequests
+                    .Where(x => x.Status == "Pending Finance Review")
+                    .OrderByDescending(x => x.CreatedAt)
+                    .ToListAsync();
             }
             else
             {
-                return await _context.SponsorshipRequests.ToListAsync();
-
+                return await _context.SponsorshipRequests
+                    .OrderByDescending(x => x.CreatedAt)
+                    .ToListAsync();
             }
         }
 
